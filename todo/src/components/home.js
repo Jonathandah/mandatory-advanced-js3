@@ -1,25 +1,20 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
-import { Route, Link, Redirect } from "react-router-dom";
-import './App.css';
-import Home from "./components/home";
-import Login from "./components/login";
-import Register from "./components/register";
-import axios from "axios"
+import { Redirect } from "react-router-dom";
+import '../App.css';
+import axios from "axios";
 
-class Home extends Component {
+class Main extends Component {
     constructor(props){
         super(props);
         this.state={
-            token: "",
-            login: false,
+            token: window.localStorage.token,
             error: false,
             value: "",
         }
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
     }
-
+    /*
     componentDidMount(){
         const API_ROOT = "http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000";
         axios.get(API_ROOT + "/todos", this.state.token)
@@ -33,7 +28,8 @@ class Home extends Component {
             })
         });
     }
-    
+    */
+   
     onChange(e){
         this.setState({
             value: e.target.value,
@@ -55,7 +51,8 @@ class Home extends Component {
     }
 
   render() {
-      if(this.state.login == false){
+      console.log(this.state.login);
+      if(this.state.token.length === 0){
         return <Redirect to="/login"></Redirect>
       }
 
@@ -75,3 +72,4 @@ class Home extends Component {
     );
   }
 }
+export default Main;

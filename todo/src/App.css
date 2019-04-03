@@ -27,3 +27,13 @@ justify-content: center;
 align-items: center;
 position: relative;
 }
+
+.--containerCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.--column{
+  flex-direction: column;
+}
+

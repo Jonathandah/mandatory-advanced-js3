@@ -17,9 +17,9 @@ class App extends Component {
             <Link to="/register">Register</Link>
           </header>
           <main>
-            <Route exact path="/" Component={Home}></Route>
-            <Route exact path="/login" Component={Login}></Route>
-            <Route exact path="/register" Component={Register}></Route>
+            <Route exact path="/" component={Home}></Route>
+            <Route path="/login" component={Login}></Route>
+            <Route  path="/register" component={Register}></Route>
           </main>
         </div>
       </Router>
