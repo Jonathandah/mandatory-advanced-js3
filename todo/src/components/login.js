@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Link, Redirect } from "react-router-dom";
+import {token$, updateToken} from "../store";
 import '../App.css';
 import Form from "./form"
 import axios from "axios";
+import jwt from "jsonwebtoken";
+
 
 
 class Login extends Component {
@@ -13,8 +16,11 @@ class Login extends Component {
       email: "",
       password: "",
       login: false,
-      token: "",
+      error: false,
     }
+    this.CancleToken = axios.CancelToken;
+    this.source = this.CancleToken.source();
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -36,21 +42,41 @@ class Login extends Component {
     const API_ROOT = "http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000";
     const email = this.state.email;
     const password = this.state.password;
-    axios.post(API_ROOT + "/auth", {email, password})
+    axios.post(API_ROOT + "/auth", {email, password}, {cancelToken: this.source.token})
     .then((response)=>{
+
       console.log(response);
+      updateToken(response.data.token);
+
       this.setState({
         login: true,
       })
-
-      window.localStorage.setItem("token", response.data.token);
     })
+    .catch((error)=>{
+      console.log(error);
+      this.setState({
+        error: true,
+      })
+    })
+  }
+
+
+  componentWillUnmount(){
+    this.source.cancel("Request cancel");
   }
 
   render() {
     if(this.state.login){
       return <Redirect to="/"></Redirect>
+    }else if(this.state.error){
+      return(
+        <div className="--containerCenter">
+          <p>Something went wrong...</p>
+        </div>
+      ) 
     }
+
+
     return (
         <div className="Login --containerCenter --column">
             <div className="Login__container --containerCenter --column">

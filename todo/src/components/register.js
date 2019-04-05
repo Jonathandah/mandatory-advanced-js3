@@ -12,7 +12,11 @@ class Register extends Component {
       email: "",
       password: "",
       register: false,
+      error: false,
     }
+    this.CancleToken = axios.CancelToken;
+    this.source = this.CancleToken.source();
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -36,18 +40,34 @@ class Register extends Component {
     const API_ROOT = "http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000";
     const email = this.state.email;
     const password = this.state.password;
-    axios.post(API_ROOT + "/register", {email, password})
+    axios.post(API_ROOT + "/register", {email, password}, {cancelToken: this.source.token})
     .then((response)=>{
         console.log(response);
         this.setState({
             register: true,
         })
     })
+    .catch((error)=>{
+      console.log(error);
+      this.setState({
+        error: true,
+      })
+    })
+  }
+
+  componentWillUnmount(){
+    this.source.cancel("Request cancel");
   }
 
   render() {
       if(this.state.register){
         return <Redirect to="/login"></Redirect>
+      }else if(this.state.error){
+        return(
+          <div className="--containerCenter">
+            <p>Something went wrong...</p>
+          </div>
+        ) 
       }
 
     return (

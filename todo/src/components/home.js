@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
+import {token$, updateToken} from "../store";
 import '../App.css';
 import axios from "axios";
+import jwt from "jsonwebtoken";
+import List from "./list";
 
 class Main extends Component {
     constructor(props){
         super(props);
         this.state={
-            token: window.localStorage.token,
-            error: false,
+            token: token$.value,
+            postError: false,
+            getError: false,
             value: "",
         }
         this.onChange = this.onChange.bind(this);
@@ -24,12 +28,13 @@ class Main extends Component {
         .catch((error)=>{
             console.log(error);
             this.setState({
-                error: true
+                getError: true
             })
         });
     }
     */
-   
+
+    
     onChange(e){
         this.setState({
             value: e.target.value,
@@ -47,13 +52,28 @@ class Main extends Component {
         })
         .catch((error)=>{
             console.log(error)
+            this.setState({
+                postError: true,
+            })
         })
     }
 
   render() {
-      console.log(this.state.login);
-      if(this.state.token.length === 0){
+      console.log(this.state.token);
+      if(this.state.token === undefined){
         return <Redirect to="/login"></Redirect>
+      }else if(this.state.addError){
+        return(
+          <div className="--containerCenter">
+            <p>Something went wrong...</p>
+          </div>
+        ) 
+      }else if(this.state.getError){
+        return(
+          <div className="--containerCenter">
+            <p>Something went wrong...</p>
+          </div>
+        ) 
       }
 
     return (
@@ -65,7 +85,7 @@ class Main extends Component {
                     <button onClick={this.onClick}>Add</button>
                 </div>
                 <div className="Home__container__box">
-
+                <List></List>
                 </div>
             </div>
         </div>
