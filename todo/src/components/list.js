@@ -2,13 +2,12 @@ import React from 'react';
 
 const List = (props) =>{
     function createLi(item){
-        
-        return <li >{item}</li>
+        return <li key={item.id}>{item.content} <button value={item.id} onClick={props.onDelete}>X</button></li>
     }
 
     return(
         <ul>
-          {/*props.list.map(item => createLi(item))*/}
+          {props.todos.map(item => createLi(item))}
         </ul>
     )
 }

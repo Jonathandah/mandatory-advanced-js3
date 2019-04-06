@@ -42,7 +42,7 @@ class Login extends Component {
     const API_ROOT = "http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000";
     const email = this.state.email;
     const password = this.state.password;
-    axios.post(API_ROOT + "/auth", {email, password}, {cancelToken: this.source.token})
+    axios.post(API_ROOT + "/auth", {email, password})
     .then((response)=>{
 
       console.log(response);
