@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 
 
-export const token$ = new BehaviorSubject(window.localStorage.token);
+export const token$ = new BehaviorSubject(window.localStorage.token || null);
 
 export function updateToken(newToken){
     window.localStorage.setItem("token",newToken);
@@ -9,5 +9,5 @@ export function updateToken(newToken){
 }
 
 export function clearToken(){
-    window.localStorage.clear();
+    window.localStorage.removeItem("token");
 }

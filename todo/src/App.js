@@ -16,32 +16,25 @@ class App extends Component {
       email: "",
       logout: false,
     }
+    this.onLogout = this.onLogout.bind(this);
   }
   
   componentDidMount(){
     console.log(token$);
-    if(token$._value !== undefined){
-      const decode = jwt.decode(token$._value);
+    if(token$.value !== null){
+      const decode = jwt.decode(token$.value);
       console.log(decode);
       this.setState({
-        email: decode.email
+        email: "signed in as" + decode.email
       })
     }
-
   }
   
   onLogout(){
     clearToken();
-    this.setState({
-      logout: true,
-    })
   }
 
   render() {
-    if(this.state.logout){
-      return <Redirect to="/login"></Redirect>
-    }
-
     return (
       <Router>
         <div className="App">
@@ -49,7 +42,7 @@ class App extends Component {
             <Link to="/">Home</Link>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
-            <p>signed in as: {this.state.email}</p>
+            <p>{this.state.email}</p>
             <button onClick={this.onLogout}>signout</button>
           </header>
           <main>

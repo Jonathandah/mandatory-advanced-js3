@@ -5,6 +5,7 @@ import '../App.css';
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import List from "./list";
+import { connect } from 'tls';
 
 class Main extends Component {
     constructor(props){
@@ -14,7 +15,7 @@ class Main extends Component {
             postError: false,
             getError: false,
             value: "",
-            todos: [{content: "test", id: "afasfafdafsa"}],
+            todos: undefined,
         }
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -43,11 +44,18 @@ class Main extends Component {
         });
       }
     }
-
+    
     componentDidMount(){
       this.getApi();
+
+      this.subscription = token$.subscribe((token) => {
+        this.setState({ token });
+      });
     }
-    
+
+    componentWillUnmount() {
+      this.subscription.unsubscribe();
+    }
     
     onChange(e){
         this.setState({
@@ -94,9 +102,9 @@ class Main extends Component {
         })
       })
     }
-
+    
   render() {
-      if(this.state.token === undefined){
+      if(this.state.token === null){
         return <Redirect to="/login"></Redirect>
       }else if(this.state.postError){
         return(
@@ -128,4 +136,5 @@ class Main extends Component {
     );
   }
 }
+
 export default Main;
