@@ -15,6 +15,7 @@ class App extends Component {
     this.state={
       email: "",
       logout: false,
+      token: token$.value,
     }
     this.onLogout = this.onLogout.bind(this);
   }
@@ -27,7 +28,13 @@ class App extends Component {
       this.setState({
         email: "signed in as" + decode.email
       })
+      this.subscription = token$.subscribe((token) => {
+        this.setState({ token });
+      });
     }
+  }
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
   
   onLogout(){
@@ -38,11 +45,12 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <header>
-            <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+          <header className="App__header">
+            <Link to="/" className="App__header__link">Home</Link>
+            <Link to="/login" className="App__header__link">Login</Link>
+            <Link to="/register" className="App__header__link">Register</Link>
             <p>{this.state.email}</p>
+            {/*token$.value === null ? <button onClick={this.onLogout}>signout</button> : null            funkar inte???*/} 
             <button onClick={this.onLogout}>signout</button>
           </header>
           <main>

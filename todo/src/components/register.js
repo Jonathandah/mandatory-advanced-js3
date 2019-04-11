@@ -16,7 +16,6 @@ class Register extends Component {
     }
     this.CancleToken = axios.CancelToken;
     this.source = this.CancleToken.source();
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }

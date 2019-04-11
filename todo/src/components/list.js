@@ -1,11 +1,12 @@
 import React from 'react';
 
 const List = (props) =>{
-    console.log(props.todo)
+    console.log(props.todos)
     function createLi(item){
+        console.log(item);
         return <li key={item.id}>{item.content} <button value={item.id} onClick={props.onDelete}>X</button></li>
     }
-    if(props.todo !== undefined){
+    if(props.todos !== null){
         return(
             <ul>
                 {props.todos.map(item => createLi(item))}

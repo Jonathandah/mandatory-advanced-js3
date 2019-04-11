@@ -13,9 +13,9 @@ class Main extends Component {
         this.state={
             token: token$.value,
             postError: false,
-            getError: false,
+            getError: false,  //kolla vilka sorts fel man kan få från att hämta list API:ET
             value: "",
-            todos: undefined,
+            todos: null,
         }
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
@@ -38,16 +38,19 @@ class Main extends Component {
         })
         .catch((error)=>{
             console.log(error);
+
+            /*
             this.setState({
                 getError: true
             })
+            */
+           updateToken(null);
         });
       }
     }
     
     componentDidMount(){
       this.getApi();
-
       this.subscription = token$.subscribe((token) => {
         this.setState({ token });
       });
@@ -61,6 +64,7 @@ class Main extends Component {
         this.setState({
             value: e.target.value,
         })
+        console.log(this.state.value);
     }
 
     onClick(e){
@@ -78,6 +82,7 @@ class Main extends Component {
             this.setState({
               todos: [...this.state.todos, response.data.todo]
             })
+            console.log(this.state.todos);
         })
         .catch((error)=>{
             console.log(error)
