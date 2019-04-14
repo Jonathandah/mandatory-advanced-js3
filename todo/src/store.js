@@ -10,4 +10,5 @@ export function updateToken(newToken){
 
 export function clearToken(){
     window.localStorage.removeItem("token");
+    token$.next(null);
 }

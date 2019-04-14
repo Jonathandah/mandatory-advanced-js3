@@ -21,8 +21,8 @@ class App extends Component {
   }
   
   componentDidMount(){
-    console.log(token$);
-    if(token$.value !== null){
+    console.log(token$.value);
+    if(token$.value !== "null" && token$.value !== null ){
       const decode = jwt.decode(token$.value);
       console.log(decode);
       this.setState({
@@ -33,11 +33,15 @@ class App extends Component {
       });
     }
   }
+  
   componentWillUnmount() {
     this.subscription.unsubscribe();
   }
   
   onLogout(){
+    this.setState({
+      email: "",
+    })
     clearToken();
   }
 
@@ -62,6 +66,7 @@ class App extends Component {
       </Router>
     );
   }
+
 }
 
 export default App;
