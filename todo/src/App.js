@@ -13,7 +13,6 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      email: "",
       logout: false,
       token: token$.value,
     }
@@ -25,9 +24,6 @@ class App extends Component {
     if(token$.value !== "null" && token$.value !== null ){
       const decode = jwt.decode(token$.value);
       console.log(decode);
-      this.setState({
-        email: "signed in as" + decode.email
-      })
       this.subscription = token$.subscribe((token) => {
         this.setState({ token });
       });
@@ -46,6 +42,8 @@ class App extends Component {
   }
 
   render() {
+    const { token } = this.state;
+
     return (
       <Router>
         <div className="App">
@@ -53,7 +51,7 @@ class App extends Component {
             <Link to="/" className="App__header__link">Home</Link>
             <Link to="/login" className="App__header__link">Login</Link>
             <Link to="/register" className="App__header__link">Register</Link>
-            <p>{this.state.email}</p>
+            <p>{token ? jwt.decode(token).email : null }</p>
             {/*token$.value === null ? <button onClick={this.onLogout}>signout</button> : null            funkar inte???*/} 
             <button onClick={this.onLogout}>signout</button>
           </header>
